@@ -48,6 +48,44 @@ app.get('/',(req, res) =>{
         );
 
 });
+
+// ======================================================================
+// Obetenr medico por id
+// ======================================================================
+
+app.get('/:id', (req, res ) => {
+
+    var id = req.params.id;
+
+    Medico.findById(id)
+        .populate('usuario', 'nombre email img')
+        .populate('hospital','nombre img')
+        .exec(
+            (err, medico ) => {
+                if( err ) {
+                    return res.status(400).json({
+                        ok: false,
+                        mensaje: 'Error buscando medico ',
+                        errros: err
+                    })
+                }
+
+                if( !medico ){
+                    return res.status(400).json({
+                        ok: false,
+                        mensaje: 'El medico con el id '+id+' no existe',
+                        errros: { message: 'El medico con el id '+id+' no existe'}
+                    })
+                }
+        
+                return res.status(200).json({
+                    ok: true,
+                    medico: medico,
+                }) 
+            }  
+        );
+})
+
 // ======================================================================
 //  método para crear un medico
 // ======================================================================

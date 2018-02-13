@@ -62,7 +62,7 @@ app.post('/google', (req, res ) =>{
                     return res.status(400).json({
                         ok:false,
                         mensaje:'Debe usar la autenticación normal',
-                        errors: errs
+                        errors: {mensaje:'Debe usar la autenticación normal'}
                     }); 
                 }else{
 
@@ -92,6 +92,7 @@ app.post('/google', (req, res ) =>{
                 usuario.google = true;
 
                 usuario.save( (err, usuarioBb) => {
+                    
                     if( err ){
                         return res.status(400).json({
                             ok:false,
